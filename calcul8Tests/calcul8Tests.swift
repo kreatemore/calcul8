@@ -70,9 +70,9 @@ class CalculatorTests: XCTestCase {
         calculator.append("1")
         calculator.performOperation(operation: RevealResult())
 
-        XCTAssert(calculator.operationsToPerform[0].operation is Addition)
-        XCTAssert(calculator.operationsToPerform[1].operation is RevealResult)
-        XCTAssert(calculator.operationsToPerform.count == 2)
+        XCTAssert(calculator.operations[0].operation is Addition)
+        XCTAssert(calculator.operations[1].operation is RevealResult)
+        XCTAssert(calculator.operations.count == 2)
     }
 
     func testHistoryIsLimited() throws {
@@ -84,7 +84,7 @@ class CalculatorTests: XCTestCase {
             calculator.performOperation(operation: operation)
         }
 
-        XCTAssert(calculator.operationsToPerform.count == 5)
+        XCTAssert(calculator.operations.count == 5)
     }
 
     func testPerformOperationShowsResult() throws {
@@ -147,7 +147,7 @@ class CalculatorTests: XCTestCase {
         calculator.performOperation(operation: Reset())
 
         XCTAssertEqual("0", calculator.display)
-        XCTAssertEqual(0, calculator.operationsToPerform.count)
+        XCTAssertEqual(0, calculator.operations.count)
     }
 
     func testEndlesslyRepeatsOperation() throws {

@@ -14,18 +14,18 @@ class Calculator: ObservableObject {
     @Published var result: Float? = nil
     @Published var pending = String(DISPLAY_EMPTY)
     @Published var display = String(DISPLAY_ZERO)
-    var operationsToPerform: [Operation] = []
+    var operations: [Operation] = []
 
     func performOperation(operation: SimpleMathematicalOperation) {
         if operation is Reset {
-            operationsToPerform.removeAll()
+            operations.removeAll()
             clearInput()
             display(0)
             return
         }
 
         let displayValue = completeMostRecentPendingOperation(operation: operation)
-        var result = displayValue ?? operationsToPerform.last!.result!
+        var result = displayValue ?? operations.last!.result!
         var nextOperation = Operation(a: result, operation: operation)
 
         if operation is SingleValueOperation {
@@ -36,13 +36,13 @@ class Calculator: ObservableObject {
 
         clearInput()
         display(result)
-        operationsToPerform.append(nextOperation)
+        operations.append(nextOperation)
         limitHistory(maxSize: HISTORY_SIZE)
     }
 
     private func completeMostRecentPendingOperation(operation: SimpleMathematicalOperation) -> Float? {
         let userInput = parseInput()
-        let mostRecentPendingOperationIndex = operationsToPerform.firstIndex {
+        let mostRecentPendingOperationIndex = operations.firstIndex {
             $0.isPending
         }
         let pendingOperationExists = mostRecentPendingOperationIndex != nil
@@ -55,14 +55,14 @@ class Calculator: ObservableObject {
         let hasOperationChanged = userInput == nil // user selected + then - without entering a number
 
         if hasOperationChanged {
-            operationsToPerform[i].operation = operation
+            operations[i].operation = operation
         }
 
-        operationsToPerform[i].complete(b: userInput ?? 0)
-        operationsToPerform[i].calculateResult()
-        display(operationsToPerform[i].result!)
+        operations[i].complete(b: userInput ?? 0)
+        operations[i].calculateResult()
+        display(operations[i].result!)
 
-        return operationsToPerform[i].result
+        return operations[i].result
     }
 
     private func parseInput() -> Float? {
@@ -78,11 +78,11 @@ class Calculator: ObservableObject {
     }
 
     private func limitHistory(maxSize: Int) {
-        if operationsToPerform.count < maxSize {
+        if operations.count < maxSize {
             return
         }
 
-        operationsToPerform.removeFirst(operationsToPerform.count - maxSize)
+        operations.removeFirst(operations.count - maxSize)
     }
 
     func append(_ numericChar: String) {
