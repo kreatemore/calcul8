@@ -86,13 +86,17 @@ class Subtraction: SimpleMathematicalOperation {
     }
 }
 
-class Reset: SimpleMathematicalOperation {
+class SingleValueOperation: SimpleMathematicalOperation {
+}
+
+class Reset: SingleValueOperation {
     override class var operationSign: String {
         "AC"
     }
-}
 
-class SingleValueOperation: SimpleMathematicalOperation {
+    override func perform(a: Float?, b: Float?) -> Float {
+        Float(0)
+    }
 }
 
 class RevealResult: SingleValueOperation {

@@ -4,7 +4,7 @@
 
 import Foundation
 
-let HISTORY_SIZE = 5
+let HISTORY_SIZE = 3
 let DISPLAY_EMPTY = ""
 let DISPLAY_ZERO = "0"
 let DECIMAL_SEPARATOR = "."
@@ -17,13 +17,6 @@ class Calculator: ObservableObject {
     var operations: [Operation] = []
 
     func performOperation(operation: SimpleMathematicalOperation) {
-        if operation is Reset {
-            operations.removeAll()
-            clearInput()
-            display(0)
-            return
-        }
-
         let displayValue = completePendingOperation(operation: operation)
         var result = displayValue ?? operations.last!.result!
         var nextOperation = Operation(a: result, operation: operation)

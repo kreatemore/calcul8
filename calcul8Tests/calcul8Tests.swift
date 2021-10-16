@@ -79,12 +79,12 @@ class CalculatorTests: XCTestCase {
         let calculator = Calculator()
         let operation: SimpleMathematicalOperation = Addition()
 
-        for _ in 1...10 {
+        for _ in 1...HISTORY_SIZE * 2 {
             calculator.append("1")
             calculator.performOperation(operation: operation)
         }
 
-        XCTAssert(calculator.operations.count == 5)
+        XCTAssert(calculator.operations.count == HISTORY_SIZE)
     }
 
     func testPerformOperationShowsResult() throws {
@@ -135,19 +135,6 @@ class CalculatorTests: XCTestCase {
         calculator.performOperation(operation: RevealResult())
 
         XCTAssertEqual("3", calculator.display)
-    }
-
-    func testResetClearsHistory() throws {
-        let calculator = Calculator()
-
-        calculator.append("1")
-        calculator.performOperation(operation: Addition())
-        calculator.append("2")
-        calculator.performOperation(operation: RevealResult())
-        calculator.performOperation(operation: Reset())
-
-        XCTAssertEqual("0", calculator.display)
-        XCTAssertEqual(0, calculator.operations.count)
     }
 
     func testEndlesslyRepeatsOperation() throws {
