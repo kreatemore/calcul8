@@ -4,7 +4,7 @@
 
 import Foundation
 
-class SimpleMathematicsOperation {
+class SimpleMathematicalOperation {
     var safeDefault: Float {
         Float(1)
     }
@@ -26,7 +26,7 @@ class SimpleMathematicsOperation {
     }
 }
 
-class Multiplication: SimpleMathematicsOperation {
+class Multiplication: SimpleMathematicalOperation {
     override class var operationSign: String {
         "×"
     }
@@ -40,7 +40,7 @@ class Multiplication: SimpleMathematicsOperation {
     }
 }
 
-class Division: SimpleMathematicsOperation {
+class Division: SimpleMathematicalOperation {
     override class var operationSign: String {
         "÷"
     }
@@ -58,7 +58,7 @@ class Division: SimpleMathematicsOperation {
     }
 }
 
-class Addition: SimpleMathematicsOperation {
+class Addition: SimpleMathematicalOperation {
     override class var operationSign: String {
         "+"
     }
@@ -72,7 +72,7 @@ class Addition: SimpleMathematicsOperation {
     }
 }
 
-class Subtraction: SimpleMathematicsOperation {
+class Subtraction: SimpleMathematicalOperation {
     override class var operationSign: String {
         "-"
     }
@@ -86,7 +86,26 @@ class Subtraction: SimpleMathematicsOperation {
     }
 }
 
-class Reverse: SimpleMathematicsOperation {
+class Reset: SimpleMathematicalOperation {
+    override class var operationSign: String {
+        "AC"
+    }
+}
+
+class RevealResult: SimpleMathematicalOperation {
+    override class var operationSign: String {
+        "="
+    }
+
+    override func perform(a: Float?, b: Float?) -> Float {
+        safe(a)
+    }
+}
+
+class RepeatableOperation: SimpleMathematicalOperation {
+}
+
+class Reverse: RepeatableOperation {
     override class var operationSign: String {
         "±"
     }
@@ -100,7 +119,7 @@ class Reverse: SimpleMathematicsOperation {
     }
 }
 
-class Ratio: SimpleMathematicsOperation {
+class Ratio: RepeatableOperation {
     override class var operationSign: String {
         "%"
     }
@@ -114,28 +133,12 @@ class Ratio: SimpleMathematicsOperation {
     }
 }
 
-class Reset: SimpleMathematicsOperation {
-    override class var operationSign: String {
-        "AC"
-    }
-}
-
-class RevealResult: SimpleMathematicsOperation {
-    override class var operationSign: String {
-        "="
-    }
-
-    override func perform(a: Float?, b: Float?) -> Float {
-        safe(a)
-    }
-}
-
 struct Operation: Identifiable {
     var id = UUID()
 
     var a: Float?
     var b: Float?
-    var operation: SimpleMathematicsOperation
+    var operation: SimpleMathematicalOperation
     var result: Float?
 
     mutating func calculateResult() {

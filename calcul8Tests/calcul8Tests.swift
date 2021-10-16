@@ -76,7 +76,7 @@ class CalculatorTests: XCTestCase {
 
     func testHistoryIsLimited() throws {
         let calculator = Calculator()
-        let operation: SimpleMathematicsOperation = Addition()
+        let operation: SimpleMathematicalOperation = Addition()
 
         for _ in 1...10 {
             calculator.append("1")

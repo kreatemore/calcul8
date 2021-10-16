@@ -16,7 +16,7 @@ class Calculator: ObservableObject {
     @Published var display = String(DISPLAY_ZERO)
     var operationsToPerform: [Operation] = []
 
-    func performOperation(operation: SimpleMathematicsOperation) {
+    func performOperation(operation: SimpleMathematicalOperation) {
         if operation is Reset {
             operationsToPerform.removeAll()
             clearInput()
@@ -32,9 +32,8 @@ class Calculator: ObservableObject {
 
         var result = currentNumber ?? operationsToPerform.last!.result!
         var nextOperation = Operation(a: result, operation: operation)
-        let isOperationRepeatable = operation is Reverse || operation is Ratio
 
-        if isOperationRepeatable {
+        if operation is RepeatableOperation {
             let operationResult = operation.perform(a: nextOperation.a, b: nextOperation.b)
             nextOperation.b = 0
             nextOperation.result = operationResult
@@ -47,7 +46,7 @@ class Calculator: ObservableObject {
         limitHistory(maxSize: HISTORY_SIZE)
     }
 
-    private func completeMostRecentPendingOperation(operation: SimpleMathematicsOperation) -> Float? {
+    private func completeMostRecentPendingOperation(operation: SimpleMathematicalOperation) -> Float? {
         let userInput = parseInput()
         let mostRecentPendingOperationIndex = operationsToPerform.firstIndex {
             $0.b == nil
