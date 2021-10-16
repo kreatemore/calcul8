@@ -24,7 +24,7 @@ class Calculator: ObservableObject {
             return
         }
 
-        let displayValue = completeMostRecentPendingOperation(operation: operation)
+        let displayValue = completePendingOperation(operation: operation)
         var result = displayValue ?? operations.last!.result!
         var nextOperation = Operation(a: result, operation: operation)
 
@@ -40,18 +40,18 @@ class Calculator: ObservableObject {
         limitHistory(maxSize: HISTORY_SIZE)
     }
 
-    private func completeMostRecentPendingOperation(operation: SimpleMathematicalOperation) -> Float? {
+    private func completePendingOperation(operation: SimpleMathematicalOperation) -> Float? {
         let userInput = parseInput()
-        let mostRecentPendingOperationIndex = operations.firstIndex {
+        let pendingOperationIndex = operations.firstIndex {
             $0.isPending
         }
-        let pendingOperationExists = mostRecentPendingOperationIndex != nil
+        let pendingOperationExists = pendingOperationIndex != nil
 
         if !pendingOperationExists {
             return userInput
         }
 
-        let i = mostRecentPendingOperationIndex!
+        let i = pendingOperationIndex!
         let hasOperationChanged = userInput == nil // user selected + then - without entering a number
 
         if hasOperationChanged {
