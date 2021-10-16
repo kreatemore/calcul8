@@ -71,7 +71,8 @@ class CalculatorTests: XCTestCase {
         calculator.performOperation(operation: RevealResult())
 
         XCTAssert(calculator.operationsToPerform[0].operation is Addition)
-        XCTAssert(calculator.operationsToPerform.count == 1)
+        XCTAssert(calculator.operationsToPerform[1].operation is RevealResult)
+        XCTAssert(calculator.operationsToPerform.count == 2)
     }
 
     func testHistoryIsLimited() throws {

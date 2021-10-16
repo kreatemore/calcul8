@@ -25,19 +25,13 @@ class Calculator: ObservableObject {
         }
 
         let displayValue = completeMostRecentPendingOperation(operation: operation)
-
-        if operation is RevealResult {
-            return
-        }
-
         var result = displayValue ?? operationsToPerform.last!.result!
         var nextOperation = Operation(a: result, operation: operation)
 
-        if operation is RepeatableOperation {
-            let operationResult = operation.perform(a: nextOperation.a, b: nextOperation.b)
-            nextOperation.b = 0
-            nextOperation.result = operationResult
-            result = operationResult
+        if operation is SingleValueOperation {
+            nextOperation.calculateResult()
+            nextOperation.complete()
+            result = nextOperation.result!
         }
 
         clearInput()
@@ -49,22 +43,22 @@ class Calculator: ObservableObject {
     private func completeMostRecentPendingOperation(operation: SimpleMathematicalOperation) -> Float? {
         let userInput = parseInput()
         let mostRecentPendingOperationIndex = operationsToPerform.firstIndex {
-            $0.b == nil
+            $0.isPending
         }
-        let areNoPendingOperations = mostRecentPendingOperationIndex == nil
+        let pendingOperationExists = mostRecentPendingOperationIndex != nil
 
-        if areNoPendingOperations {
+        if !pendingOperationExists {
             return userInput
         }
 
-        let hasOperationChanged = userInput == nil // user selected + then - without entering a number
         let i = mostRecentPendingOperationIndex!
+        let hasOperationChanged = userInput == nil // user selected + then - without entering a number
 
         if hasOperationChanged {
             operationsToPerform[i].operation = operation
         }
 
-        operationsToPerform[i].b = userInput
+        operationsToPerform[i].complete(b: userInput ?? 0)
         operationsToPerform[i].calculateResult()
         display(operationsToPerform[i].result!)
 

@@ -92,7 +92,10 @@ class Reset: SimpleMathematicalOperation {
     }
 }
 
-class RevealResult: SimpleMathematicalOperation {
+class SingleValueOperation: SimpleMathematicalOperation {
+}
+
+class RevealResult: SingleValueOperation {
     override class var operationSign: String {
         "="
     }
@@ -102,10 +105,7 @@ class RevealResult: SimpleMathematicalOperation {
     }
 }
 
-class RepeatableOperation: SimpleMathematicalOperation {
-}
-
-class Reverse: RepeatableOperation {
+class Reverse: SingleValueOperation {
     override class var operationSign: String {
         "±"
     }
@@ -115,7 +115,7 @@ class Reverse: RepeatableOperation {
     }
 }
 
-class Ratio: RepeatableOperation {
+class Ratio: SingleValueOperation {
     override class var operationSign: String {
         "%"
     }
@@ -127,13 +127,21 @@ class Ratio: RepeatableOperation {
 
 struct Operation: Identifiable {
     var id = UUID()
-
-    var a: Float?
+    var a: Float
     var b: Float?
     var operation: SimpleMathematicalOperation
     var result: Float?
+    var isPending: Bool {
+        get {
+            b == nil
+        }
+    }
 
     mutating func calculateResult() {
         result = operation.perform(a: a, b: b)
+    }
+
+    mutating func complete(b: Float = 0) {
+        self.b = b
     }
 }
