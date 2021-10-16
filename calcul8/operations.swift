@@ -111,11 +111,7 @@ class Reverse: RepeatableOperation {
     }
 
     override func perform(a: Float?, b: Float?) -> Float {
-        if a == nil {
-            return safe(b) * -1
-        } else {
-            return safe(a) * -1
-        }
+        safe(a) * -1
     }
 }
 
@@ -125,11 +121,7 @@ class Ratio: RepeatableOperation {
     }
 
     override func perform(a: Float?, b: Float?) -> Float {
-        if a == nil {
-            return safe(b) / 100
-        } else {
-            return safe(a) / 100
-        }
+        safe(a) / 100
     }
 }
 
