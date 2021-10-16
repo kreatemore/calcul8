@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B06B1B13939271D4026F651C /* operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06B1A5A3049F87BDE1C3EBA /* operations.swift */; };
+		B06B1B52C623D8839BAD513B /* calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06B1A3519A4EB5EF56E05F0 /* calculator.swift */; };
+		B06B1C138A8179085F7474BD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06B1081C422B903913ED126 /* ContentView.swift */; };
 		FB6BAABB271707F300588990 /* calcul8App.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6BAABA271707F300588990 /* calcul8App.swift */; };
-		FB6BAABD271707F300588990 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6BAABC271707F300588990 /* ContentView.swift */; };
 		FB6BAABF271707F400588990 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB6BAABE271707F400588990 /* Assets.xcassets */; };
 		FB6BAAC2271707F400588990 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB6BAAC1271707F400588990 /* Preview Assets.xcassets */; };
 		FB6BAACC271707F400588990 /* calcul8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6BAACB271707F400588990 /* calcul8Tests.swift */; };
@@ -34,9 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B06B1081C422B903913ED126 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B06B1A3519A4EB5EF56E05F0 /* calculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = calculator.swift; sourceTree = "<group>"; };
+		B06B1A5A3049F87BDE1C3EBA /* operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = operations.swift; sourceTree = "<group>"; };
 		FB6BAAB7271707F300588990 /* calcul8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = calcul8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB6BAABA271707F300588990 /* calcul8App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calcul8App.swift; sourceTree = "<group>"; };
-		FB6BAABC271707F300588990 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FB6BAABE271707F400588990 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB6BAAC1271707F400588990 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FB6BAAC7271707F400588990 /* calcul8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = calcul8Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,9 +99,11 @@
 			isa = PBXGroup;
 			children = (
 				FB6BAABA271707F300588990 /* calcul8App.swift */,
-				FB6BAABC271707F300588990 /* ContentView.swift */,
 				FB6BAABE271707F400588990 /* Assets.xcassets */,
 				FB6BAAC0271707F400588990 /* Preview Content */,
+				B06B1081C422B903913ED126 /* ContentView.swift */,
+				B06B1A3519A4EB5EF56E05F0 /* calculator.swift */,
+				B06B1A5A3049F87BDE1C3EBA /* operations.swift */,
 			);
 			path = calcul8;
 			sourceTree = "<group>";
@@ -257,8 +263,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB6BAABD271707F300588990 /* ContentView.swift in Sources */,
 				FB6BAABB271707F300588990 /* calcul8App.swift in Sources */,
+				B06B1C138A8179085F7474BD /* ContentView.swift in Sources */,
+				B06B1B52C623D8839BAD513B /* calculator.swift in Sources */,
+				B06B1B13939271D4026F651C /* operations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +427,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"calcul8/Preview Content\"";
+				DEVELOPMENT_TEAM = U628U5AWGA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -426,7 +435,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -436,7 +445,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -448,6 +457,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"calcul8/Preview Content\"";
+				DEVELOPMENT_TEAM = U628U5AWGA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -455,7 +465,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -465,7 +475,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
@@ -477,7 +487,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -488,7 +498,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/calcul8.app/calcul8";
 			};
 			name = Debug;
@@ -501,7 +511,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -512,7 +522,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/calcul8.app/calcul8";
 			};
 			name = Release;
@@ -534,7 +544,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				TEST_TARGET_NAME = calcul8;
 			};
 			name = Debug;
@@ -556,7 +566,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				TEST_TARGET_NAME = calcul8;
 			};
 			name = Release;

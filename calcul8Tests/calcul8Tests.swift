@@ -8,26 +8,158 @@
 import XCTest
 @testable import calcul8
 
-class calcul8Tests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+class OperatorTests: XCTestCase {
+    func testMultiplication() throws {
+        let result = Multiplication().perform(a: 2.5, b: 4)
+        XCTAssertEqual(10, result)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testDivision() throws {
+        let result = Division().perform(a: 5, b: 2)
+        XCTAssertEqual(2.5, result)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAddition() throws {
+        let result = Addition().perform(a: 2.5, b: 2.5)
+        XCTAssertEqual(5, result)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testSubtraction() throws {
+        let result = Subtraction().perform(a: 3, b: 4)
+        XCTAssertEqual(-1, result)
+    }
+}
+
+
+class CalculatorTests: XCTestCase {
+    func testDisplayValueBeingEntered() throws {
+        let calculator = Calculator()
+
+        calculator.append("7")
+        calculator.append("5")
+
+        XCTAssertEqual("75", calculator.display)
+    }
+
+    func testMultipleDecimalSeparatorsAreHandled() throws {
+        let calculator = Calculator()
+
+        calculator.append("7")
+        calculator.append(".")
+        calculator.append("5")
+        calculator.append(".")
+        calculator.append("1")
+
+        XCTAssertEqual("7.51", calculator.display)
+    }
+
+    func testOnlyDecimalSeparatorsAreHandled() throws {
+        let calculator = Calculator()
+
+        calculator.append(".")
+        calculator.performOperation(operation: RevealResult())
+
+        XCTAssertEqual("0", calculator.display)
+    }
+
+    func testPerformOperationStoresHistory() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Addition())
+        calculator.append("1")
+        calculator.performOperation(operation: RevealResult())
+
+        XCTAssert(calculator.operationsToPerform[0].operation is Addition)
+        XCTAssert(calculator.operationsToPerform.count == 1)
+    }
+
+    func testHistoryIsLimited() throws {
+        let calculator = Calculator()
+        let operation: SimpleMathematicsOperation = Addition()
+
+        for _ in 1...10 {
+            calculator.append("1")
+            calculator.performOperation(operation: operation)
         }
+
+        XCTAssert(calculator.operationsToPerform.count == 5)
     }
 
+    func testPerformOperationShowsResult() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Addition())
+        calculator.append("2")
+        calculator.performOperation(operation: RevealResult())
+
+        XCTAssertEqual("3", calculator.display)
+    }
+
+    func testSubtractNegatives() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Subtraction())
+        calculator.append("4")
+        calculator.performOperation(operation: Subtraction())
+        calculator.append("4")
+        calculator.performOperation(operation: Addition())
+        calculator.append("5")
+        calculator.performOperation(operation: RevealResult())
+
+        XCTAssertEqual("-2", calculator.display)
+    }
+
+    func testChangeOperationMidCalculation() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Subtraction())
+        calculator.performOperation(operation: Addition())
+        calculator.append("4")
+        calculator.performOperation(operation: RevealResult())
+
+        XCTAssertEqual("5", calculator.display)
+    }
+
+    func testShowResultsKeepsLastResult() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Addition())
+        calculator.append("2")
+        calculator.performOperation(operation: RevealResult())
+        calculator.performOperation(operation: RevealResult())
+
+        XCTAssertEqual("3", calculator.display)
+    }
+
+    func testResetClearsHistory() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Addition())
+        calculator.append("2")
+        calculator.performOperation(operation: RevealResult())
+        calculator.performOperation(operation: Reset())
+
+        XCTAssertEqual("0", calculator.display)
+        XCTAssertEqual(0, calculator.operationsToPerform.count)
+    }
+
+    func testEndlesslyRepeatsOperation() throws {
+        let calculator = Calculator()
+
+        calculator.append("1")
+        calculator.performOperation(operation: Reverse())
+        XCTAssertEqual("-1", calculator.display)
+
+        calculator.performOperation(operation: Reverse())
+        XCTAssertEqual("1", calculator.display)
+
+        calculator.performOperation(operation: Reverse())
+        XCTAssertEqual("-1", calculator.display)
+    }
 }
