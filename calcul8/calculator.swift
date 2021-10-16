@@ -19,8 +19,8 @@ class Calculator: ObservableObject {
     func performOperation(operation: SimpleMathematicsOperation) {
         if operation is Reset {
             operationsToPerform.removeAll()
-            setResult(0)
             clearInput()
+            display(0)
             return
         }
 
@@ -42,7 +42,7 @@ class Calculator: ObservableObject {
         }
 
         clearInput()
-        setResult(result)
+        display(result)
         operationsToPerform.append(nextOperation)
         limitHistory(maxSize: HISTORY_SIZE)
     }
@@ -67,7 +67,7 @@ class Calculator: ObservableObject {
 
         operationsToPerform[i].b = userInput
         operationsToPerform[i].calculateResult()
-        setResult(operationsToPerform[i].result!)
+        display(operationsToPerform[i].result!)
 
         return operationsToPerform[i].result
     }
@@ -101,10 +101,10 @@ class Calculator: ObservableObject {
         }
 
         pending = pending + numericChar
-        setResult(parseInput()!)
+        display(parseInput()!)
     }
 
-    private func setResult(_ number: Float) {
+    private func display(_ number: Float) {
         let result = NSNumber(value: number)
         let formatter = NumberFormatter()
         formatter.groupingSeparator = THOUSANDS_SEPARATOR
