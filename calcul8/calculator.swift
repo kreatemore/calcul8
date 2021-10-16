@@ -24,13 +24,13 @@ class Calculator: ObservableObject {
             return
         }
 
-        let currentNumber = completeMostRecentPendingOperation(operation: operation)
+        let displayValue = completeMostRecentPendingOperation(operation: operation)
 
         if operation is RevealResult {
             return
         }
 
-        var result = currentNumber ?? operationsToPerform.last!.result!
+        var result = displayValue ?? operationsToPerform.last!.result!
         var nextOperation = Operation(a: result, operation: operation)
 
         if operation is RepeatableOperation {
