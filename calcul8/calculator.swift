@@ -12,7 +12,7 @@ let THOUSANDS_SEPARATOR = " "
 
 class Calculator: ObservableObject {
     @Published var result: Float? = nil
-    @Published var pending = String(DISPLAY_EMPTY)
+    @Published var input = String(DISPLAY_EMPTY)
     @Published var display = String(DISPLAY_ZERO)
     var operations: [Operation] = []
 
@@ -45,7 +45,7 @@ class Calculator: ObservableObject {
         }
 
         let i = pendingOperationIndex!
-        let hasOperationChanged = userInput == nil // user selected + then - without entering a number
+        let hasOperationChanged = userInput == nil // e.g. user selected + then - without entering a number
 
         if hasOperationChanged {
             operations[i].operation = operation
@@ -59,15 +59,15 @@ class Calculator: ObservableObject {
     }
 
     private func parseInput() -> Float? {
-        if (pending == DECIMAL_SEPARATOR) {
+        if (input == DECIMAL_SEPARATOR) {
             return Float(0)
         }
 
-        return Float(pending)
+        return Float(input)
     }
 
     private func clearInput() {
-        pending = String(DISPLAY_EMPTY)
+        input = String(DISPLAY_EMPTY)
     }
 
     private func limitHistory(maxSize: Int) {
@@ -79,14 +79,14 @@ class Calculator: ObservableObject {
     }
 
     func append(_ numericChar: String) {
-        let isZeroPrefix = pending == DISPLAY_EMPTY && numericChar == DISPLAY_ZERO
-        let isDuplicateDecimalSeparator = pending.contains(DECIMAL_SEPARATOR) && numericChar == DECIMAL_SEPARATOR
+        let isZeroPrefix = input == DISPLAY_EMPTY && numericChar == DISPLAY_ZERO
+        let isDuplicateDecimalSeparator = input.contains(DECIMAL_SEPARATOR) && numericChar == DECIMAL_SEPARATOR
 
         if isZeroPrefix || isDuplicateDecimalSeparator {
             return
         }
 
-        pending = pending + numericChar
+        input = input + numericChar
         display(parseInput()!)
     }
 
