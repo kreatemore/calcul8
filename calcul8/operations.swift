@@ -129,7 +129,7 @@ class Ratio: SingleValueOperation {
     }
 }
 
-struct Operation: Identifiable {
+struct Calculation: Identifiable {
     var id = UUID()
     var a: Float
     var b: Float?
@@ -147,5 +147,60 @@ struct Operation: Identifiable {
 
     mutating func complete(b: Float = 0) {
         self.b = b
+    }
+}
+
+let HISTORY_SIZE = 3
+
+class CalculationRepository {
+    var calculations: [Calculation] = []
+    var last: Calculation? {
+        get {
+            calculations.last
+        }
+    }
+
+    private var pendingIndex: Int? = nil
+
+    func add(_ calculation: Calculation) {
+        calculations.append(calculation)
+        manageCalculationsSize()
+
+        if calculation.isPending {
+            pendingIndex = calculations.count - 1
+        }
+    }
+
+    func getPending() -> Calculation? {
+        guard pendingIndex == nil else {
+            return calculations[pendingIndex!]
+        }
+
+        return nil
+    }
+
+    func completePending(missingValue: Float = 0, operation: SimpleMathematicalOperation? = nil) -> Float? {
+        guard pendingIndex == nil else {
+            if operation != nil {
+                calculations[pendingIndex!].operation = operation!
+            }
+
+            calculations[pendingIndex!].complete(b: missingValue)
+            calculations[pendingIndex!].calculateResult()
+            let result = calculations[pendingIndex!].result
+            pendingIndex = nil
+
+            return result
+        }
+
+        return nil
+    }
+
+    private func manageCalculationsSize() {
+        if calculations.count <= HISTORY_SIZE {
+            return
+        }
+
+        calculations.removeFirst(calculations.count - HISTORY_SIZE)
     }
 }

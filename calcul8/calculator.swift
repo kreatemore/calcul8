@@ -4,7 +4,6 @@
 
 import Foundation
 
-let HISTORY_SIZE = 3
 let DISPLAY_EMPTY = ""
 let DISPLAY_ZERO = "0"
 let DECIMAL_SEPARATOR = "."
@@ -14,68 +13,11 @@ class Calculator: ObservableObject {
     @Published var result: Float? = nil
     @Published var input = String(DISPLAY_EMPTY)
     @Published var display = String(DISPLAY_ZERO)
-    var operations: [Operation] = []
 
-    func performOperation(operation: SimpleMathematicalOperation) {
-        let displayValue = completePendingOperation(operation: operation)
-        var result = displayValue ?? operations.last!.result!
-        var nextOperation = Operation(a: result, operation: operation)
+    private var calculations: CalculationRepository
 
-        if operation is SingleValueOperation {
-            nextOperation.calculateResult()
-            nextOperation.complete()
-            result = nextOperation.result!
-        }
-
-        clearInput()
-        display(result)
-        operations.append(nextOperation)
-        limitHistory(maxSize: HISTORY_SIZE)
-    }
-
-    private func completePendingOperation(operation: SimpleMathematicalOperation) -> Float? {
-        let userInput = parseInput()
-        let pendingOperationIndex = operations.firstIndex {
-            $0.isPending
-        }
-        let pendingOperationExists = pendingOperationIndex != nil
-
-        if !pendingOperationExists {
-            return userInput
-        }
-
-        let i = pendingOperationIndex!
-        let hasOperationChanged = userInput == nil // e.g. user selected + then - without entering a number
-
-        if hasOperationChanged {
-            operations[i].operation = operation
-        }
-
-        operations[i].complete(b: userInput ?? 0)
-        operations[i].calculateResult()
-        display(operations[i].result!)
-
-        return operations[i].result
-    }
-
-    private func parseInput() -> Float? {
-        if (input == DECIMAL_SEPARATOR) {
-            return Float(0)
-        }
-
-        return Float(input)
-    }
-
-    private func clearInput() {
-        input = String(DISPLAY_EMPTY)
-    }
-
-    private func limitHistory(maxSize: Int) {
-        if operations.count < maxSize {
-            return
-        }
-
-        operations.removeFirst(operations.count - maxSize)
+    init(calculationRepository: CalculationRepository) {
+        calculations = calculationRepository
     }
 
     func append(_ numericChar: String) {
@@ -88,6 +30,50 @@ class Calculator: ObservableObject {
 
         input = input + numericChar
         display(parseInput()!)
+    }
+
+    func performOperation(operation: SimpleMathematicalOperation) {
+        let displayValue = completePendingCalculation(operation: operation)
+        var result = displayValue ?? calculations.last!.result!
+        let calculation = Calculation(a: result, operation: operation)
+        calculations.add(calculation)
+
+        if operation is SingleValueOperation {
+            result = calculations.completePending()!
+        }
+
+        clearInput()
+        display(result)
+    }
+
+    private func completePendingCalculation(operation: SimpleMathematicalOperation) -> Float? {
+        let userInput = parseInput()
+        let pendingOperation = calculations.getPending()
+
+        if pendingOperation == nil {
+            return userInput
+        }
+
+        let hasOperationChanged = userInput == nil // e.g. user selected + then - without entering a number
+        var updatedOperation: SimpleMathematicalOperation? = nil
+
+        if hasOperationChanged {
+            updatedOperation = operation
+        }
+
+        return calculations.completePending(missingValue: userInput ?? 0, operation: updatedOperation)
+    }
+
+    private func parseInput() -> Float? {
+        if (input == DECIMAL_SEPARATOR) {
+            return Float(0)
+        }
+
+        return Float(input)
+    }
+
+    private func clearInput() {
+        input = String(DISPLAY_EMPTY)
     }
 
     private func display(_ number: Float) {

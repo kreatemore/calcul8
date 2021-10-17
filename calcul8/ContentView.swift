@@ -22,7 +22,7 @@ extension Button {
 let BUTTON_WIDTH: CGFloat = 80
 
 struct ContentView: View {
-    @ObservedObject var calculator = Calculator()
+    @ObservedObject var calculator = Calculator(calculationRepository: CalculationRepository())
 
     var body: some View {
         VStack {

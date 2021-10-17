@@ -30,10 +30,30 @@ class OperatorTests: XCTestCase {
     }
 }
 
+class MockCalculationRepository: CalculationRepository {
+    var addCalls: [Calculation] = []
 
-class CalculatorTests: XCTestCase {
+    override func add(_ calculation: Calculation) {
+        addCalls.append(calculation)
+        super.add(_: calculation)
+    }
+}
+
+internal class BaseCalculatorTests: XCTestCase {
+    var mockCalculationRepository = MockCalculationRepository()
+
+    internal func initializeCalculator() -> Calculator{
+        Calculator(calculationRepository: mockCalculationRepository)
+    }
+
+    override func tearDown() {
+        mockCalculationRepository.addCalls.removeAll()
+    }
+}
+
+class CalculatorTests: BaseCalculatorTests {
     func testDisplayValueBeingEntered() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("7")
         calculator.append("5")
@@ -42,7 +62,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func testMultipleDecimalSeparatorsAreHandled() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("7")
         calculator.append(".")
@@ -54,7 +74,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func testOnlyDecimalSeparatorsAreHandled() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append(".")
         calculator.performOperation(operation: RevealResult())
@@ -63,20 +83,20 @@ class CalculatorTests: XCTestCase {
     }
 
     func testPerformOperationStoresHistory() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("1")
         calculator.performOperation(operation: Addition())
         calculator.append("1")
         calculator.performOperation(operation: RevealResult())
 
-        XCTAssert(calculator.operations[0].operation is Addition)
-        XCTAssert(calculator.operations[1].operation is RevealResult)
-        XCTAssert(calculator.operations.count == 2)
+        XCTAssert(mockCalculationRepository.addCalls[0].operation is Addition)
+        XCTAssert(mockCalculationRepository.addCalls[1].operation is RevealResult)
+        XCTAssert(mockCalculationRepository.addCalls.count == 2)
     }
 
     func testHistoryIsLimited() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
         let operation: SimpleMathematicalOperation = Addition()
 
         for _ in 1...HISTORY_SIZE * 2 {
@@ -84,11 +104,11 @@ class CalculatorTests: XCTestCase {
             calculator.performOperation(operation: operation)
         }
 
-        XCTAssert(calculator.operations.count == HISTORY_SIZE)
+        XCTAssert(mockCalculationRepository.calculations.count == HISTORY_SIZE)
     }
 
     func testPerformOperationShowsResult() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("1")
         calculator.performOperation(operation: Addition())
@@ -99,7 +119,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func testSubtractNegatives() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("1")
         calculator.performOperation(operation: Subtraction())
@@ -114,7 +134,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func testChangeOperationMidCalculation() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("1")
         calculator.performOperation(operation: Subtraction())
@@ -126,7 +146,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func testShowResultsKeepsLastResult() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("1")
         calculator.performOperation(operation: Addition())
@@ -138,7 +158,7 @@ class CalculatorTests: XCTestCase {
     }
 
     func testEndlesslyRepeatsOperation() throws {
-        let calculator = Calculator()
+        let calculator = initializeCalculator()
 
         calculator.append("1")
         calculator.performOperation(operation: Reverse())
@@ -149,5 +169,27 @@ class CalculatorTests: XCTestCase {
 
         calculator.performOperation(operation: Reverse())
         XCTAssertEqual("-1", calculator.display)
+    }
+}
+
+class CalculationRepositoryTests: XCTestCase {
+    func testReturnsPendingCalculation() throws {
+        let repo = CalculationRepository()
+        let calculation = Calculation(a: 1, b: nil, operation: Addition(), result: nil)
+
+        repo.add(calculation)
+
+        XCTAssertEqual(repo.getPending()?.id, calculation.id)
+    }
+
+    func testCompletePendingCalculation() throws {
+        let repo = CalculationRepository()
+        let completedValue = Float(1)
+        repo.add(Calculation(a: 1, b: nil, operation: Addition(), result: nil))
+
+        repo.completePending(missingValue: completedValue)
+
+        XCTAssertNil(repo.getPending())
+        XCTAssertEqual(repo.last!.b, completedValue)
     }
 }
