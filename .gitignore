@@ -13,5 +13,8 @@
 /.idea/workspace.xml
 /.idea/xcode.xml
 
-# Xcode specific
-/calcul8.xcodeproj
+/build/
+/calcul8.xcodeproj/project.xcworkspace/xcshareddata/
+/calcul8.xcodeproj/project.xcworkspace/xcuserdata/device.xcuserdatad/
+/calcul8.xcodeproj/xcuserdata/device.xcuserdatad/xcschemes/CalculationRepositoryTests.xcscheme
+/.idea/runConfigurations/
