@@ -13,6 +13,8 @@ class SimpleMathematicalOperation {
         ""
     }
 
+    required init() {}
+
     func perform(a: Float?, b: Float?) -> Float {
         Float()
     }
