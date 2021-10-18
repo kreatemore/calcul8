@@ -15,7 +15,7 @@ extension Button {
 
     func asOperation() -> some View {
         font(Font.system(.largeTitle, design: .monospaced))
-                .foregroundColor(Color.primary)
+                .foregroundColor(Color.white)
     }
 }
 
@@ -28,9 +28,10 @@ struct ContentView: View {
         VStack {
             renderResultContainer()
             HStack {
-                renderOperationButton(Reset.self, color: Color(.quaternarySystemFill))
-                renderOperationButton(Reverse.self, color: Color(.quaternarySystemFill))
-                renderOperationButton(Ratio.self, color: Color(.quaternarySystemFill))
+                let alternativeOperationButtonColor = Color(.orange).opacity(0.8)
+                renderOperationButton(Reset.self, color: alternativeOperationButtonColor)
+                renderOperationButton(Reverse.self, color: alternativeOperationButtonColor)
+                renderOperationButton(Ratio.self, color: alternativeOperationButtonColor)
                 renderOperationButton(Multiplication.self)
             }.padding(.top, 50)
             HStack {

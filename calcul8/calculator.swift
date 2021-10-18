@@ -55,11 +55,7 @@ class Calculator: ObservableObject {
         }
 
         let hasOperationChanged = userInput == nil // e.g. user selected + then - without entering a number
-        var updatedOperation: SimpleMathematicalOperation? = nil
-
-        if hasOperationChanged {
-            updatedOperation = operation
-        }
+        let updatedOperation = hasOperationChanged ? operation : nil
 
         return calculations.completePending(missingValue: userInput ?? 0, operation: updatedOperation)
     }
